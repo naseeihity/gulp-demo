@@ -1,0 +1,16 @@
+{
+    "local": {
+        "port": "3000",
+        "key": "",
+        "cert": "",
+        "index": "./src/html/index.html",
+        "root": ["./"],
+        "host": "://localhost:"
+    },
+    "proxy": {
+        "uri": "/api",
+        "host": "3.121.1.111",
+        "port": "1884"
+    },
+    "https": true    
+}

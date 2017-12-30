@@ -1,0 +1,1 @@
+{"version":3,"sources":["common.css","first.css"],"names":[],"mappings":"AAAA,GACA,MAAA,KCDA,GACA,UAAA","file":"../style.css","sourcesContent":["h1{\n    color: #013;\n}","h1{\n    font-size: 20rem;\n}"]}
