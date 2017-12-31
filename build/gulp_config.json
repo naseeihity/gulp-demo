@@ -1,7 +1,7 @@
 {
     "js": {
         "src": [
-            "./src/js/*.js"
+            "src/js/*.js"
         ],
         "concat": {
             "main": "index.js"
@@ -9,11 +9,11 @@
         "concat_min": {
             "main": "index.min.js"
         },
-        "dest": "./dist/js/"
+        "dest": "dist/js/"
     },
     "css": {
         "src": [
-            "./src/css/*.css"
+            "src/css/*.css"
         ],
         "concat": {
             "main": "style.css"
@@ -21,18 +21,18 @@
         "concat_min": {
             "main": "style.min.css"
         },
-        "dest": "./dist/css/"
+        "dest": "dist/css/"
     },
     "html": {
-        "index": "./src/html/index.html",
+        "index": "src/html/index.html",
         "src": [
-            "./**/*.html"
+            "**/*.html"
         ],
         "dest": ""
     },
     "rev": {
-        "src": "./dist/rev/*.json",
-        "dest": "./dist/rev",
-        "destH": "./src/html/"
+        "src": "dist/rev/*.json",
+        "dest": "dist/rev",
+        "destH": "src/html/"
     }
 }

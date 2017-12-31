@@ -1,24 +1,6 @@
 var gulp = require('gulp');
 var minimist = require('minimist');
 
-// //文件合并
-// var concat = require('gulp-concat');
-// //文件重命名
-// var rename = require('gulp-rename');
-// //代码混淆
-// var uglify = require('gulp-uglify');
-// //代码映射
-// var source_map = require('gulp-sourcemaps');
-// //css压缩
-// var minify_css = require('gulp-clean-css');
-// //静态文件MD5后缀
-// var rev = require('gulp-rev');
-// //文件替换
-// var rev_collector = require('gulp-rev-collector');
-//本地开发环境
-// var connect = require('gulp-connect');
-// var watch = require('gulp-watch');
-
 //使用gulp-load-plugins自动命名gulp的相关包，通过package.json映射，驼峰命名
 var $ = require('gulp-load-plugins')();
 
@@ -34,7 +16,7 @@ var del = require('del');
 
 
 // 导入配置文件
-var cfg = require('./build/gulp_config.json');
+var cfg = require('build/gulp_config.json');
 var JS = cfg.js;
 var CSS = cfg.css;
 var HTML = cfg.html;
@@ -60,7 +42,7 @@ gulp.task('pack-js', function() {
     .pipe(gulp.dest(JS.dest))          //将文件写入文件夹
     .pipe($.rename(JS.concat_min.main))           //设置混淆后的文件名
     .pipe($.uglify())                         //代码混淆
-    .pipe($.sourcemaps.write('./maps/'))           //输出sourcemap
+    .pipe($.sourcemaps.write('maps/'))           //输出sourcemap
     .pipe(gulp.dest(JS.dest));         //输出最终的结果
 });
 
@@ -86,7 +68,8 @@ gulp.task('rev', function() {
     .pipe(gulp.dest(REV.destH));        //输出
 });
 
-var devCfg = require('./build/dev_config.json');
+//开发环境配置
+var devCfg = require('build/dev_config.json');
 var devLocal = devCfg.local;
 var devProxy = devCfg.proxy;
 var knownOptions = {
@@ -127,7 +110,7 @@ gulp.task('webserver', function() {
             ]
         }
     });
-    // open('http' + devLocal.host + devLocal.port);
+    open((devCfg.https ? "https" : "http")  + devLocal.host + devLocal.port);
 });
 
 //将对处理后的文件的watch提出，使得各个任务更加纯粹
@@ -151,19 +134,19 @@ gulp.task('watch', ['webserver', 'livereload'], function() {
 
 //雪碧图生成
 gulp.task('sprite', function () {
-    var spriteData = gulp.src('./src/imgs/*').pipe($.spritesmith({
+    var spriteData = gulp.src('src/imgs/*').pipe($.spritesmith({
       imgName: 'sprite.png',
       cssName: 'sprite.css'
     }));
-    return spriteData.pipe(gulp.dest('./dist/sprite/'));
+    return spriteData.pipe(gulp.dest('dist/sprite/'));
 });
 
 //gulp-imagemin未能成功启用
 //gulp-imagemin: Couldn't load default plugin "optipng"
 // gulp.task('pack-img', function() {
-//     return gulp.src('./src/imgs/*')
+//     return gulp.src('src/imgs/*')
 //         .pipe(imagemin())
-//         .pipe(gulp.dest('./dist/images/'));
+//         .pipe(gulp.dest('dist/images/'));
 // });
 
 // Others
