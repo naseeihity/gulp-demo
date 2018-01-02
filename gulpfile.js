@@ -16,7 +16,7 @@ var del = require('del');
 
 
 // 导入配置文件
-var cfg = require('build/gulp_config.json');
+var cfg = require('./build/gulp_config.json');
 var JS = cfg.js;
 var CSS = cfg.css;
 var HTML = cfg.html;
@@ -52,7 +52,7 @@ gulp.task('pack-css', function() {
         .pipe($.sourcemaps.init())
         .pipe($.concat(CSS.concat.main))
         .pipe($.cleanCss())                 //css代码压缩
-        .pipe($.sourcemaps.write('./maps/')) 
+        .pipe($.sourcemaps.write('maps/')) 
         .pipe(gulp.dest(CSS.dest))
         .pipe($.rename(CSS.concat_min.main))
         .pipe($.rev())                        //增加md5后缀
@@ -69,7 +69,7 @@ gulp.task('rev', function() {
 });
 
 //开发环境配置
-var devCfg = require('build/dev_config.json');
+var devCfg = require('./build/dev_config.json');
 var devLocal = devCfg.local;
 var devProxy = devCfg.proxy;
 var knownOptions = {
@@ -79,8 +79,9 @@ var knownOptions = {
 var optionCL = minimist(process.argv.slice(2), knownOptions);
 
 var proxyHost = optionCL.host || devProxy.host;
-var PROXY_TARGET = (devCfg.https ? "https://" : "http://") 
-                        + proxyHost + ":" + devProxy.port + devProxy.uri;
+var HTTPS = devCfg.https ? "https://" : "http://";
+var LOCAL_TARGET = HTTPS + devLocal.host + ":" + devLocal.port;
+var PROXY_TARGET = HTTPS + proxyHost + ":" + devProxy.port;
 
 //本地服务
 gulp.task('webserver', function() {
@@ -98,13 +99,13 @@ gulp.task('webserver', function() {
         fallback: devLocal.index,   //index重定向
         middleware: function(connect, opt) {
             return [
-                proxy(devProxy.uri,  {
-                    target: PROXY_TARGET,
-                    changeOrigin:true
-                }),
                 // 可以代理到多个远程服务器
                 proxy('/otherServer', {
-                    target: 'https://IP:Port',
+                    target: LOCAL_TARGET,
+                    changeOrigin:true
+                }),
+                proxy(devProxy.uri,  {
+                    target: PROXY_TARGET,
                     changeOrigin:true
                 })
             ]
